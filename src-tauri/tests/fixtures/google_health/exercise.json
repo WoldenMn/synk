@@ -1,0 +1,28 @@
+{
+  "dataPoints": [
+    {
+      "name": "users/111111256096816351/dataTypes/exercise/dataPoints/exercise-test-1",
+      "dataSource": {
+        "recordingMethod": "MANUAL",
+        "platform": "FITBIT"
+      },
+      "exercise": {
+        "interval": {
+          "startTime": "2026-10-24T14:00:00Z",
+          "startUtcOffset": "7200s",
+          "endTime": "2026-10-24T14:46:00Z",
+          "endUtcOffset": "7200s"
+        },
+        "exerciseType": "RUNNING",
+        "metricsSummary": {
+          "caloriesKcal": 410.5,
+          "distanceMillimeters": 8200000,
+          "averageHeartRateBeatsPerMinute": "151"
+        },
+        "displayName": "Run",
+        "activeDuration": "2700s"
+      }
+    }
+  ],
+  "nextPageToken": ""
+}

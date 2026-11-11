@@ -1,0 +1,24 @@
+{
+  "status": 0,
+  "body": {
+    "activities": [
+      {
+        "date": "2026-09-14",
+        "steps": 8450,
+        "distance": 6100.5,
+        "elevation": 12.0,
+        "soft": 3600,
+        "moderate": 1200,
+        "intense": 300,
+        "active": 1500,
+        "calories": 380.5,
+        "totalcalories": 2210.0,
+        "hr_average": 72,
+        "hr_min": 55,
+        "hr_max": 131
+      }
+    ],
+    "more": false,
+    "offset": 0
+  }
+}

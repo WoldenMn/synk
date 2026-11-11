@@ -1,0 +1,3 @@
+[
+ {"id":"2AC312F","upload_time":"2026-10-24T17:00:00.000Z","polar_user":"https://www.polaraccesslink.com/v3/users/10579","device":"Polar Test","device_id":"1111AAAA","start_time":"2026-10-24T18:00:00","start_time_utc_offset":120,"duration":"PT45M30S","calories":512,"distance":8200.5,"heart_rate":{"average":148,"maximum":171},"training_load":143.22,"sport":"RUNNING","has_route":false,"detailed_sport_info":"RUNNING"}
+]

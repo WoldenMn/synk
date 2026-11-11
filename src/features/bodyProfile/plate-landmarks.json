@@ -1,0 +1,29 @@
+{
+  "viewBox": {
+    "width": 256,
+    "height": 700
+  },
+  "y": {
+    "crown": 21,
+    "jaw": 100,
+    "chin": 117,
+    "neck": 123,
+    "neckBase": 130,
+    "shoulder": 151,
+    "deltoid": 188,
+    "chest": 206,
+    "ribs": 238,
+    "waist": 272,
+    "hip": 314,
+    "hips": 357,
+    "crotch": 396,
+    "thigh": 420,
+    "aboveKnee": 465,
+    "knee": 497,
+    "calf": 550,
+    "lowerCalf": 605,
+    "ankle": 628,
+    "instep": 650,
+    "sole": 690
+  }
+}

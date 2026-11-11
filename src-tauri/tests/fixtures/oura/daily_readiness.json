@@ -1,0 +1,4 @@
+{"data":[
+{"id":"dr-test-1","day":"2026-10-24","score":78,"temperature_deviation":-0.23,"temperature_trend_deviation":0.1},
+{"id":"dr-test-2","day":"2026-10-25","score":85,"temperature_deviation":0.12,"temperature_trend_deviation":null}
+],"next_token":null}

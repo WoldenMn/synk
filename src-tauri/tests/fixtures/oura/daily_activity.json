@@ -1,0 +1,4 @@
+{"data":[
+{"id":"da-test-1","day":"2026-10-24","steps":9876,"active_calories":412,"total_calories":2410,"equivalent_walking_distance":7800,"low_activity_time":5400,"medium_activity_time":1800,"high_activity_time":600,"score":80},
+{"id":"da-test-2","day":"2026-10-25","steps":4321,"active_calories":210,"total_calories":2150,"equivalent_walking_distance":3300,"low_activity_time":3600,"medium_activity_time":600,"high_activity_time":0,"score":64}
+],"next_token":null}

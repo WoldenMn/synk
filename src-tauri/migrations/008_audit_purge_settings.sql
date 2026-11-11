@@ -1,0 +1,3 @@
+ALTER TABLE settings ADD COLUMN audit_retention_days INTEGER NOT NULL DEFAULT 180;
+ALTER TABLE settings ADD COLUMN audit_max_entries INTEGER NOT NULL DEFAULT 10000;
+ALTER TABLE settings ADD COLUMN audit_auto_purge_enabled INTEGER NOT NULL DEFAULT 1;

@@ -1,0 +1,8 @@
+{
+  "date": "2026-11-01",
+  "vitest": 1011,
+  "cargo": 1030,
+  "couverture_ts": 77,
+  "couverture_rust": 85,
+  "couverture_withings_client": 92
+}

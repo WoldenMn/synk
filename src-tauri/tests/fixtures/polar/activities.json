@@ -1,0 +1,4 @@
+[
+ {"start_time":"2026-10-24T07:12:00","end_time":"2026-10-24T23:59:59","active_duration":"PT3H11M","inactive_duration":"PT12H0M","daily_activity":89.1,"calories":2500,"active_calories":420,"steps":8823,"inactivity_alert_count":1,"distance_from_steps":4590.53},
+ {"start_time":"2026-10-25T07:30:00","end_time":"2026-10-25T23:59:59","active_duration":"PT1H5M","inactive_duration":"PT14H0M","daily_activity":40.0,"calories":2300,"active_calories":250,"steps":4100,"inactivity_alert_count":2,"distance_from_steps":2100.0}
+]

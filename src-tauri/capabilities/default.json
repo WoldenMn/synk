@@ -1,0 +1,25 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Default capabilities for Synk",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        { "url": "https://account.withings.com/*" },
+        { "url": "https://developer.withings.com/*" },
+        { "url": "https://cloud.ouraring.com/*" },
+        { "url": "https://flow.polar.com/*" },
+        { "url": "https://admin.polaraccesslink.com/*" },
+        { "url": "https://api.prod.whoop.com/*" },
+        { "url": "https://developer-dashboard.whoop.com/*" },
+        { "url": "https://accounts.google.com/*" },
+        { "url": "https://console.developers.google.com/*" }
+      ]
+    },
+    "opener:allow-reveal-item-in-dir",
+    "dialog:allow-open"
+  ]
+}

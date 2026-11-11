@@ -1,0 +1,63 @@
+[package]
+name = "synk"
+version = "1.0.0"
+description = "Application de suivi sante et mensurations"
+authors = ["WoldenMn"]
+license = "LicenseRef-Proprietary"
+publish = false
+edition = "2021"
+rust-version = "1.94"
+
+[lib]
+name = "synk_lib"
+crate-type = ["rlib"]
+
+[build-dependencies]
+tauri-build = { version = "~2.6.3", features = [] }
+
+[dependencies]
+aes-gcm = { version = "0.11", default-features = false, features = ["aes", "alloc", "zeroize"] }
+zeroize = "1.8"
+base64 = "0.23"
+sha2 = "0.11"
+keyring-core = "1.0"
+windows-native-keyring-store = "1.1"
+tauri = { version = "~2.11.6", features = [] }
+tauri-plugin-opener = "~2.5.5"
+tauri-plugin-dialog = "~2.7.3"
+tauri-plugin-log = "~2.9.2"
+tauri-plugin-single-instance = "~2.4.5"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+log = "0.4"
+reqwest = { version = "0.13", default-features = false, features = ["native-tls", "form", "charset", "http2", "system-proxy"] }
+tokio = { version = "1", features = ["full"] }
+sqlx = { version = "0.9", features = ["runtime-tokio", "sqlite"] }
+chrono = { version = "0.4", features = ["serde"] }
+tiny_http = "0.12"
+printpdf = { version = "=0.12.8", default-features = false, features = ["png"] }
+csv = "1.3"
+getrandom = "0.4"
+thiserror = "2"
+urlencoding = "2"
+zip = { version = "~9.0.5", default-features = false, features = ["deflate-flate2"] }
+quick-xml = "0.42"
+fitparser = "~0.11.0"
+
+[dev-dependencies]
+lopdf = { version = "0.44", default-features = false }
+tempfile = "3"
+tracing = "0.1"
+tokio = { version = "1", features = ["test-util"] }
+
+[profile.dev]
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+debug = false
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+opt-level = 3

@@ -1,0 +1,5 @@
+#!/bin/sh
+global_hooks="$(git config --global core.hooksPath)"
+[ -n "$global_hooks" ] && [ -f "$global_hooks/pre-commit" ] || { echo "[pre-commit] hook global introuvable (git config --global core.hooksPath) : commit refuse." >&2; exit 1; }
+sh "$global_hooks/pre-commit" || exit 1
+npm run --silent check

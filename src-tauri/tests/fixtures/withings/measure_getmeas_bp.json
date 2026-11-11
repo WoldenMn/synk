@@ -1,0 +1,22 @@
+{
+  "status": 0,
+  "body": {
+    "updatetime": 1789380000,
+    "timezone": "Europe/Paris",
+    "measuregrps": [
+      {
+        "grpid": 5002,
+        "attrib": 0,
+        "date": 1789383600,
+        "category": 1,
+        "measures": [
+          { "value": 122, "type": 10, "unit": 0 },
+          { "value": 78, "type": 9, "unit": 0 },
+          { "value": 64, "type": 11, "unit": 0 }
+        ]
+      }
+    ],
+    "more": 0,
+    "offset": 0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "status": 0,
+  "body": {
+    "userid": "4242",
+    "access_token": "AT-2",
+    "refresh_token": "RT-2",
+    "scope": "user.info,user.metrics,user.activity",
+    "expires_in": 10800,
+    "token_type": "Bearer"
+  }
+}

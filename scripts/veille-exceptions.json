@@ -1,0 +1,86 @@
+[
+  {
+    "id": "majeure:@types/node",
+    "motif": "Node 24.14 sur le poste et engines >=22 : @types/node 26 decrit des API absentes de Node 24 (R22)",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "majeure:typescript",
+    "motif": "typescript-eslint 8.72 exige TypeScript < 6.1 : TypeScript 7 attend une version de typescript-eslint qui l'accepte (R22)",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "majeure:lopdf",
+    "motif": "lopdf 0.44 est la version de printpdf 0.12.8 (epinglee) ; la monter a part ferait compiler deux lopdf, la lecture de PDF des tests doit rester celle qui ecrit",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "RUSTSEC-2025-0081",
+    "motif": "unic-char-property : dependance de build de tauri-utils (urlpattern), executee a la compilation sur des fichiers du depot, absente de l'exe ; attend Tauri",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "RUSTSEC-2025-0075",
+    "motif": "unic-char-range : dependance de build de tauri-utils (urlpattern), executee a la compilation sur des fichiers du depot, absente de l'exe ; attend Tauri",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "RUSTSEC-2025-0080",
+    "motif": "unic-common : dependance de build de tauri-utils (urlpattern), executee a la compilation sur des fichiers du depot, absente de l'exe ; attend Tauri",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "RUSTSEC-2025-0100",
+    "motif": "unic-ucd-ident : dependance de build de tauri-utils (urlpattern), executee a la compilation sur des fichiers du depot, absente de l'exe ; attend Tauri",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "RUSTSEC-2025-0098",
+    "motif": "unic-ucd-version : dependance de build de tauri-utils (urlpattern), executee a la compilation sur des fichiers du depot, absente de l'exe ; attend Tauri",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "RUSTSEC-2024-0370",
+    "motif": "proc-macro-error : macro de procedure de glib-macros. Linux seulement : jamais compilee sous Windows (cargo tree --target x86_64-pc-windows-msvc -i vide, 2026-10-23)",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "RUSTSEC-2026-0371",
+    "motif": "zbus_names via zbus (tauri-plugin-opener, tauri-plugin-single-instance). Linux seulement : jamais compilee sous Windows (cargo tree --target x86_64-pc-windows-msvc -i vide, 2026-10-23)",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "RUSTSEC-2026-0370",
+    "motif": "zvariant via zbus (tauri-plugin-opener, tauri-plugin-single-instance). Linux seulement : jamais compilee sous Windows (cargo tree --target x86_64-pc-windows-msvc -i vide, 2026-10-23)",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "RUSTSEC-2026-0372",
+    "motif": "zvariant_derive via zbus (tauri-plugin-opener, tauri-plugin-single-instance). Linux seulement : jamais compilee sous Windows (cargo tree --target x86_64-pc-windows-msvc -i vide, 2026-10-23)",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "RUSTSEC-2024-0429",
+    "motif": "glib 0.18 vient de gtk par tao et wry. Linux seulement : jamais compilee sous Windows (cargo tree --target x86_64-pc-windows-msvc -i vide, 2026-10-23)",
+    "date": "2026-10-23",
+    "echeance": "2027-01-23"
+  },
+  {
+    "id": "majeure:jsdom",
+    "motif": "jsdom sert seulement d'environnement DOM aux tests vitest, absent de l'exe. Le frein de R22 (jsdom 30 exige Node 24.15) est leve, le poste est en Node 24.22 : la montee se fait dans un lot a part, testee seule, pas dans la release 3.0.1 qui ne corrige que des textes",
+    "date": "2026-10-29",
+    "echeance": "2026-11-29"
+  }
+]

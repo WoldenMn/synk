@@ -1,0 +1,31 @@
+{
+  "status": 0,
+  "body": {
+    "series": [
+      {
+        "date": "2026-09-14",
+        "startdate": 1789336800,
+        "enddate": 1789365600,
+        "data": {
+          "total_sleep_time": 25200,
+          "deepsleepduration": 5400,
+          "lightsleepduration": 14400,
+          "remsleepduration": 5400,
+          "wakeupduration": 1200,
+          "sleep_score": 81,
+          "hr_average": 58,
+          "hr_min": 49,
+          "hr_max": 74
+        }
+      },
+      {
+        "date": "2026-09-15",
+        "startdate": 1789423200,
+        "enddate": 1789450200,
+        "data": { "total_sleep_time": 22800, "sleep_score": 74 }
+      }
+    ],
+    "more": false,
+    "offset": 0
+  }
+}

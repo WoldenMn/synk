@@ -1,0 +1,3 @@
+{"data":[
+{"id":"wo-test-1","activity":"running","day":"2026-10-24","start_datetime":"2026-10-24T18:00:00+02:00","end_datetime":"2026-10-24T18:45:30+02:00","calories":512.5,"distance":8200.0,"intensity":"moderate","label":null,"source":"autodetected"}
+],"next_token":null}

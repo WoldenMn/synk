@@ -1,0 +1,14 @@
+{
+  "status": 0,
+  "body": {
+    "series": [
+      {
+        "ecg": { "signalid": 123456, "afib": 0 },
+        "heart_rate": { "value": 64, "qrs_duration": 92 },
+        "timestamp": 1789380000
+      }
+    ],
+    "more": false,
+    "offset": 0
+  }
+}

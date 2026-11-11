@@ -1,0 +1,194 @@
+{
+  "activity": [
+    {
+      "calories_active": 0,
+      "calories_total": 0,
+      "created_at": "2026-10-22 16:11:49",
+      "date": "2026-06-01",
+      "distance": 7100.0,
+      "duration_active": 0,
+      "duration_intense": 0,
+      "duration_moderate": 0,
+      "duration_soft": 0,
+      "elevation": 0,
+      "hr_average": 0,
+      "hr_max": 0,
+      "hr_min": 0,
+      "hr_zone_0": 0,
+      "hr_zone_1": 0,
+      "hr_zone_2": 0,
+      "hr_zone_3": 0,
+      "id": 1,
+      "source": "withings",
+      "steps": 9500
+    }
+  ],
+  "blood_pressure": [
+    {
+      "created_at": "2026-10-22 16:11:49",
+      "diastolic": 79,
+      "heart_rate": 62,
+      "id": 1,
+      "measured_at": "2026-06-01T07:35:00Z",
+      "source": "manual",
+      "systolic": 121,
+      "withings_grpid": 0
+    }
+  ],
+  "body_measures": [
+    {
+      "bmi": 0,
+      "bone_mass": 0,
+      "created_at": "2026-06-01 07:31:00",
+      "fat_free_mass": 0,
+      "fat_mass": 0,
+      "fat_ratio": 18.2,
+      "hydration": 0,
+      "id": 1,
+      "measured_at": "2026-06-01T07:30:00Z",
+      "muscle_mass": 0,
+      "source": "manual",
+      "weight": 72.4,
+      "withings_grpid": 0
+    }
+  ],
+  "goals": [
+    {
+      "created_at": "2026-10-22 16:11:49",
+      "direction": "decrease",
+      "id": 1,
+      "metric_key": "weight",
+      "target_value": 70.0,
+      "updated_at": "2026-10-22 16:11:49"
+    }
+  ],
+  "heart_records": [
+    {
+      "created_at": "2026-10-22 16:11:49",
+      "ecg_status": 1,
+      "heart_rate": 64,
+      "id": 1,
+      "qrs_duration": 0,
+      "source": "withings",
+      "timestamp": "2026-06-01T09:00:00Z",
+      "withings_ecg_id": 0
+    }
+  ],
+  "manual_measurements": [
+    {
+      "created_at": "2026-06-02 08:01:00",
+      "id": 1,
+      "measured_at": "2026-06-02T08:00:00Z",
+      "measurement_type_id": 59,
+      "notes": 0,
+      "value": 38.5
+    }
+  ],
+  "measurement_types": [
+    {
+      "category": "circumference",
+      "created_at": "2026-05-01 10:00:00",
+      "id": 59,
+      "is_builtin": 0,
+      "label": "Tour de cou (test)",
+      "slug": "tour-de-cou-test",
+      "sort_order": 999,
+      "target_direction": 0,
+      "target_value": 0,
+      "unit": "cm"
+    }
+  ],
+  "sleep_records": [
+    {
+      "apnea_hypopnea_index": 0,
+      "asleepduration": 0,
+      "breathing_disturbances_intensity": 0,
+      "created_at": "2026-10-22 16:11:49",
+      "date": "2026-06-01",
+      "duration_awake": 0,
+      "duration_deep": 5400,
+      "duration_light": 0,
+      "duration_rem": 0,
+      "duration_to_sleep": 0,
+      "duration_to_wakeup": 0,
+      "duration_total": 26000,
+      "end_at": 0,
+      "hr_average": 0,
+      "hr_max": 0,
+      "hr_min": 0,
+      "id": 1,
+      "nb_rem_episodes": 0,
+      "night_events": 0,
+      "out_of_bed_count": 0,
+      "rr_average": 0,
+      "sleep_efficiency": 0,
+      "sleep_score": 80,
+      "snoring": 0,
+      "snoring_count": 0,
+      "source": "withings",
+      "start_at": 0,
+      "total_timeinbed": 0,
+      "waso": 0,
+      "withings_id": 0
+    }
+  ],
+  "user_profile": [
+    {
+      "age": 41,
+      "allergies": 0,
+      "birth_date": 0,
+      "blood_group": 0,
+      "eye_color": 0,
+      "hair_color": 0,
+      "handedness": 0,
+      "height_cm": 178.0,
+      "id": 1,
+      "medical_history": 0,
+      "sex": "M",
+      "vaccines": 0,
+      "vision_correction": 0
+    }
+  ],
+  "vitals": [
+    {
+      "created_at": "2026-10-22 16:11:49",
+      "id": 1,
+      "measured_at": "2026-06-01T09:05:00Z",
+      "source": "manual",
+      "value": 97.0,
+      "vital_type": "spo2",
+      "withings_grpid": 0
+    }
+  ],
+  "workouts": [
+    {
+      "calories": 0,
+      "category": 0,
+      "category_label": "Course",
+      "created_at": "2026-10-22 16:11:49",
+      "date": "2026-06-01",
+      "distance": 0,
+      "duration": 1800,
+      "effort_score": 0,
+      "elevation": 0,
+      "end_at": 0,
+      "hr_average": 151,
+      "hr_max": 0,
+      "hr_min": 0,
+      "hr_zone_0": 0,
+      "hr_zone_1": 0,
+      "hr_zone_2": 0,
+      "hr_zone_3": 0,
+      "id": 1,
+      "intensity": 0,
+      "pause_duration": 0,
+      "pool_laps": 0,
+      "pool_length": 0,
+      "source": "manual",
+      "spo2_average": 0,
+      "start_at": "2026-06-01T18:00:00Z",
+      "steps": 0,
+      "withings_id": 0
+    }
+  ]
+}

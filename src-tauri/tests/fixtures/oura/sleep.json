@@ -1,0 +1,5 @@
+{"data":[
+{"id":"sp-test-1","day":"2026-10-24","type":"long_sleep","bedtime_start":"2026-10-23T23:30:00+02:00","bedtime_end":"2026-10-24T07:10:00+02:00","total_sleep_duration":25200,"deep_sleep_duration":5400,"light_sleep_duration":13500,"rem_sleep_duration":6300,"awake_time":2400,"latency":600,"time_in_bed":27600,"efficiency":91,"average_heart_rate":54.4,"lowest_heart_rate":48,"average_hrv":62,"average_breath":14.6,"low_battery_alert":false,"period":0},
+{"id":"sp-test-nap","day":"2026-10-24","type":"late_nap","bedtime_start":"2026-10-24T14:00:00+02:00","bedtime_end":"2026-10-24T14:40:00+02:00","total_sleep_duration":2400,"average_hrv":40,"low_battery_alert":false,"period":1},
+{"id":"sp-test-2","day":"2026-10-25","type":"long_sleep","bedtime_start":"2026-10-25T00:10:00+02:00","bedtime_end":"2026-10-25T07:00:00+02:00","total_sleep_duration":22000,"deep_sleep_duration":4800,"light_sleep_duration":12000,"rem_sleep_duration":5200,"awake_time":2600,"latency":420,"time_in_bed":24600,"efficiency":89,"average_heart_rate":56.0,"lowest_heart_rate":50,"average_hrv":58,"average_breath":15.0,"low_battery_alert":false,"period":0}
+],"next_token":null}

@@ -1,0 +1,7 @@
+#!/bin/sh
+# Ce core.hooksPath local prime sur les hooks globaux du poste : le pre-push global
+# (garde GitHub, posee le 2026-10-10) ne tourne pas tout seul ici, il faut l'appeler.
+# D12 : un push de main exige un passage complet de npm run verify sur le meme arbre.
+refs="$(cat)"
+printf '%s\n' "$refs" | node scripts/pre-push.mjs || exit 1
+printf '%s\n' "$refs" | sh "$(git config --global core.hooksPath)/pre-push" "$@"

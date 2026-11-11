@@ -1,0 +1,18 @@
+{
+  "status": 0,
+  "body": {
+    "series": [
+      {
+        "id": 987,
+        "category": 1,
+        "startdate": 1789387200,
+        "enddate": 1789390800,
+        "date": "2026-09-14",
+        "data": { "steps": 5200, "distance": 4200.0, "calories": 310.0, "hr_average": 128 }
+      },
+      { "id": 988, "category": 1, "startdate": 1789473600, "enddate": 1789477200, "data": { "steps": 100 } }
+    ],
+    "more": false,
+    "offset": 0
+  }
+}

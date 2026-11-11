@@ -1,0 +1,1 @@
+{"access_token": "access-test-2", "expires_in": 3600, "refresh_token": "refresh-test-2", "scope": "offline read:recovery read:sleep read:cycles read:workout", "token_type": "bearer"}

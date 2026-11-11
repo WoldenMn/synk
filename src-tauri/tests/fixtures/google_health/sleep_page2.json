@@ -1,0 +1,58 @@
+{
+  "dataPoints": [
+    {
+      "name": "users/111111256096816351/dataTypes/sleep/dataPoints/sleep-test-1",
+      "dataSource": {
+        "recordingMethod": "DERIVED",
+        "device": {
+          "displayName": "Charge 6"
+        },
+        "platform": "FITBIT"
+      },
+      "sleep": {
+        "interval": {
+          "startTime": "2026-10-23T21:30:00Z",
+          "startUtcOffset": "7200s",
+          "endTime": "2026-10-24T05:10:00Z",
+          "endUtcOffset": "7200s"
+        },
+        "type": "STAGES",
+        "metadata": {
+          "stagesStatus": "SUCCEEDED",
+          "processed": true,
+          "main": true
+        },
+        "summary": {
+          "minutesInSleepPeriod": "460",
+          "minutesAfterWakeUp": "0",
+          "minutesToFallAsleep": "10",
+          "minutesAsleep": "420",
+          "minutesAwake": "40",
+          "stagesSummary": [
+            {
+              "type": "AWAKE",
+              "minutes": "40",
+              "count": "9"
+            },
+            {
+              "type": "LIGHT",
+              "minutes": "225",
+              "count": "19"
+            },
+            {
+              "type": "DEEP",
+              "minutes": "90",
+              "count": "6"
+            },
+            {
+              "type": "REM",
+              "minutes": "105",
+              "count": "4"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "nextPageToken": ""
+}

@@ -1,0 +1,54 @@
+{
+  "rollupDataPoints": [
+    {
+      "civilStartTime": {
+        "date": {
+          "year": 2026,
+          "month": 10,
+          "day": 25
+        },
+        "time": {}
+      },
+      "civilEndTime": {
+        "date": {
+          "year": 2026,
+          "month": 10,
+          "day": 25
+        },
+        "time": {
+          "hours": 23,
+          "minutes": 59,
+          "seconds": 59
+        }
+      },
+      "steps": {
+        "countSum": "9876"
+      }
+    },
+    {
+      "civilStartTime": {
+        "date": {
+          "year": 2026,
+          "month": 10,
+          "day": 24
+        },
+        "time": {}
+      },
+      "civilEndTime": {
+        "date": {
+          "year": 2026,
+          "month": 10,
+          "day": 24
+        },
+        "time": {
+          "hours": 23,
+          "minutes": 59,
+          "seconds": 59
+        }
+      },
+      "steps": {
+        "countSum": "7210"
+      }
+    }
+  ]
+}

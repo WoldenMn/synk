@@ -1,0 +1,4 @@
+{"data":[
+{"id":"do-test-1","day":"2026-10-24","spo2_percentage":{"average":97.4},"breathing_disturbance_index":2},
+{"id":"do-test-2","day":"2026-10-25","spo2_percentage":null,"breathing_disturbance_index":null}
+],"next_token":null}

@@ -1,0 +1,80 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+coverage/
+.vite/
+.turbo/
+.next/
+src-tauri/target/
+src-tauri/WixTools/
+src-tauri/gen/
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Environment
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+.vitest/
+
+# Project management
+_backup/
+_backup_pre_*/
+_poubelle/
+
+# Organisation skill artefacts
+.orga_analysis.json
+.orga_cache.db
+.orga_trash/
+
+# Brainstorming visual companion (skill superpowers)
+.superpowers/
+
+# Tauri build transient logs
+tauri-build.log
+
+# conventions locales de poste : jamais partagees
+_archive/
+_corr/
+audits/
+# plans de travail : notes locales, hors du depot public
+docs/plans/
+# outillage Claude Code : config specifique a la machine
+.claude/settings.local.json
+.claude/launch.json
+
+# conventions locales de poste : jamais partagees (structure-projets, bloc 2)
+_perso/
+
+# secrets et config machine (structure-projets, bloc 3)
+*.pem
+*.key
+.claude/worktrees/
+
+src-tauri/mutants.out/
+src-tauri/mutants.out.old/

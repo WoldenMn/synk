@@ -1,0 +1,111 @@
+{
+  "dataPoints": [
+    {
+      "name": "users/111111256096816351/dataTypes/sleep/dataPoints/sleep-test-2",
+      "dataSource": {
+        "recordingMethod": "DERIVED",
+        "device": {
+          "displayName": "Charge 6"
+        },
+        "platform": "FITBIT"
+      },
+      "sleep": {
+        "interval": {
+          "startTime": "2026-10-24T21:30:00Z",
+          "startUtcOffset": "7200s",
+          "endTime": "2026-10-25T05:10:00Z",
+          "endUtcOffset": "7200s"
+        },
+        "type": "STAGES",
+        "metadata": {
+          "stagesStatus": "SUCCEEDED",
+          "processed": true,
+          "main": true
+        },
+        "summary": {
+          "minutesInSleepPeriod": "460",
+          "minutesAfterWakeUp": "0",
+          "minutesToFallAsleep": "10",
+          "minutesAsleep": "400",
+          "minutesAwake": "60",
+          "stagesSummary": [
+            {
+              "type": "AWAKE",
+              "minutes": "60",
+              "count": "9"
+            },
+            {
+              "type": "LIGHT",
+              "minutes": "220",
+              "count": "19"
+            },
+            {
+              "type": "DEEP",
+              "minutes": "80",
+              "count": "6"
+            },
+            {
+              "type": "REM",
+              "minutes": "100",
+              "count": "4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "users/111111256096816351/dataTypes/sleep/dataPoints/sleep-test-nap",
+      "dataSource": {
+        "recordingMethod": "DERIVED",
+        "device": {
+          "displayName": "Charge 6"
+        },
+        "platform": "FITBIT"
+      },
+      "sleep": {
+        "interval": {
+          "startTime": "2026-10-25T13:00:00Z",
+          "startUtcOffset": "7200s",
+          "endTime": "2026-10-25T13:40:00Z",
+          "endUtcOffset": "7200s"
+        },
+        "type": "STAGES",
+        "metadata": {
+          "stagesStatus": "SUCCEEDED",
+          "processed": true,
+          "main": false
+        },
+        "summary": {
+          "minutesInSleepPeriod": "40",
+          "minutesAfterWakeUp": "0",
+          "minutesToFallAsleep": "2",
+          "minutesAsleep": "35",
+          "minutesAwake": "5",
+          "stagesSummary": [
+            {
+              "type": "AWAKE",
+              "minutes": "5",
+              "count": "9"
+            },
+            {
+              "type": "LIGHT",
+              "minutes": "30",
+              "count": "19"
+            },
+            {
+              "type": "DEEP",
+              "minutes": "0",
+              "count": "6"
+            },
+            {
+              "type": "REM",
+              "minutes": "5",
+              "count": "4"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "nextPageToken": "page-2-test"
+}

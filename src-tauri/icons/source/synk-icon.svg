@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="tuile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6366F1"/>
+      <stop offset="1" stop-color="#4338CA"/>
+    </linearGradient>
+  </defs>
+  <rect x="64" y="64" width="896" height="896" rx="208" fill="url(#tuile)"/>
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 268 416 A 264 264 0 0 1 756 416" stroke-width="76"/>
+    <path d="M 756 608 A 264 264 0 0 1 268 608" stroke-width="76"/>
+    <path d="M 176 512 L 392 512 L 448 420 L 524 636 L 596 372 L 648 512 L 848 512" stroke-width="68"/>
+  </g>
+</svg>

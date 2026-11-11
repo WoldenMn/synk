@@ -1,0 +1,25 @@
+{
+  "status": 0,
+  "body": {
+    "devices": [
+      {
+        "type": "Scale",
+        "battery": "high",
+        "model": "Body+",
+        "model_id": 5,
+        "timezone": "Europe/Paris",
+        "deviceid": "abc123",
+        "last_session_date": 1789380000,
+        "first_session_date": 1700000000
+      },
+      {
+        "type": "Blood Pressure Monitor",
+        "battery": "medium",
+        "model": "BPM Connect",
+        "model_id": 44,
+        "timezone": "Europe/Paris",
+        "last_session_date": 1789380000
+      }
+    ]
+  }
+}
