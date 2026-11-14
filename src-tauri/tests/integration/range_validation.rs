@@ -134,7 +134,7 @@ fn day_range_gives_the_first_day_and_the_day_after_the_last() {
 #[tokio::test]
 async fn the_exports_refuse_an_unreadable_from_bound() {
     let pool = crate::common::memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let categories = vec!["body_measures".to_string()];
     let csv = synk_lib::commands::export::export_csv_inner(
         &pool,

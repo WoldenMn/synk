@@ -132,7 +132,7 @@ fn nothing_outside_a_source_imports_its_internals() {
 
 #[test]
 fn the_source_guard_sees_a_planted_import() {
-    let dir = tempfile::tempdir().expect("dossier temporaire");
+    let dir = crate::support::temp_dirs::tempdir().expect("dossier temporaire");
     let root = dir.path();
     for sub in [
         "commands",
@@ -194,7 +194,7 @@ fn nothing_outside_commands_imports_commands() {
 
 #[test]
 fn the_guard_sees_a_planted_import() {
-    let dir = tempfile::tempdir().expect("dossier temporaire");
+    let dir = crate::support::temp_dirs::tempdir().expect("dossier temporaire");
     let root = dir.path();
     std::fs::create_dir_all(root.join("commands")).expect("dossier");
     std::fs::write(root.join("lib.rs"), "use crate::commands::x;").expect("ecriture");
@@ -221,7 +221,7 @@ fn every_http_client_goes_through_the_common_constructor() {
 
 #[test]
 fn the_http_guard_sees_a_planted_builder() {
-    let dir = tempfile::tempdir().expect("dossier temporaire");
+    let dir = crate::support::temp_dirs::tempdir().expect("dossier temporaire");
     let root = dir.path();
     std::fs::create_dir_all(root.join("utils")).expect("dossier");
     std::fs::write(

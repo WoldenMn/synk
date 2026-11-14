@@ -19,7 +19,7 @@ fn cats() -> Vec<String> {
 
 #[tokio::test]
 async fn an_empty_period_writes_no_file() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = pool_with_one_weight(&dir).await;
     let out = dir.path().join("vide.csv");
     let rows = export_csv_inner(
@@ -38,7 +38,7 @@ async fn an_empty_period_writes_no_file() {
 
 #[tokio::test]
 async fn the_last_day_is_included_and_decimals_use_a_dot() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = pool_with_one_weight(&dir).await;
     let out = dir.path().join("septembre.csv");
     let rows = export_csv_inner(
@@ -79,7 +79,7 @@ async fn pool_with_every_category(dir: &tempfile::TempDir) -> sqlx::SqlitePool {
 
 #[tokio::test]
 async fn every_category_is_written_with_its_header_and_formatted_rows() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = pool_with_every_category(&dir).await;
     let out = dir.path().join("tout.csv");
     let categories: Vec<String> = [
@@ -129,7 +129,7 @@ async fn every_category_is_written_with_its_header_and_formatted_rows() {
 
 #[tokio::test]
 async fn free_text_that_looks_like_a_formula_is_neutralised_but_numbers_are_not() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = pool_with_one_weight(&dir).await;
     for sql in [
         "INSERT INTO measurement_types_legacy (slug, label, unit) VALUES ('piege', '=HYPERLINK(\"http://x\")', '@cmd')",

@@ -4,7 +4,7 @@ use synk_lib::boot::{init_pool_with_retry, BootError};
 
 #[tokio::test]
 async fn a_failing_migration_is_reported_with_its_version() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     let pool = synk_lib::db::init_pool(db_path.clone()).await.unwrap();
     pool.close().await;

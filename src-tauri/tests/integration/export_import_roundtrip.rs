@@ -15,7 +15,7 @@ fn write_temp_json(content: &str) -> tempfile::NamedTempFile {
     use std::io::Write;
     let mut file = tempfile::Builder::new()
         .suffix(".json")
-        .tempfile()
+        .tempfile_in(crate::support::temp_dirs::root())
         .expect("creation du fichier temporaire .json");
     file.write_all(content.as_bytes())
         .expect("ecriture du JSON temporaire");
@@ -32,8 +32,8 @@ async fn import_restores_manual_measurements_and_goals() {
       "goals": [{"metric_key": "weight", "target_value": 68.0, "direction": "decrease"}],
       "user_profile": [{"id": 1, "age": 40, "sex": "male", "height_cm": 178.0}]
     }"#;
-    let dir = std::env::temp_dir();
-    let path = dir.join("synk_test_roundtrip.json");
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
+    let path = dir.path().join("synk_test_roundtrip.json");
     std::fs::write(&path, json).unwrap();
 
     let report = synk_lib::commands::export::import_json_inner(&p, path.to_str().unwrap())
@@ -64,8 +64,6 @@ async fn import_restores_manual_measurements_and_goals() {
         .await
         .unwrap();
     assert_eq!(age, Some(40));
-
-    std::fs::remove_file(&path).ok();
 }
 
 /// T-1 : round-trip body_measures — insertion via legacy, export JSON, re-import dans DB vierge.
@@ -261,7 +259,10 @@ async fn the_chosen_source_priorities_survive_an_export_and_a_restore() {
     synk_lib::services::metrics::set_priority(&source, "weight", &["withings", "manual"])
         .await
         .unwrap();
-    let file = tempfile::Builder::new().suffix(".json").tempfile().unwrap();
+    let file = tempfile::Builder::new()
+        .suffix(".json")
+        .tempfile_in(crate::support::temp_dirs::root())
+        .unwrap();
     synk_lib::commands::export::export_json_inner(&source, file.path())
         .await
         .unwrap();

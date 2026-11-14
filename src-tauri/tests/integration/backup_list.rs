@@ -11,7 +11,7 @@ fn write_backup(path: &std::path::Path, age_secs: u64) {
 
 #[test]
 fn lists_every_kind_newest_first() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let backups = dir.path().join("backups");
     write_backup(&backups.join("auto").join("a.db"), 300);
     write_backup(&backups.join("daily").join("b.db"), 100);
@@ -29,6 +29,6 @@ fn lists_every_kind_newest_first() {
 
 #[test]
 fn no_backup_folder_gives_an_empty_list() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     assert!(list_backups_inner(dir.path()).unwrap().is_empty());
 }

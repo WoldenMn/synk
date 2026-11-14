@@ -62,7 +62,7 @@ fn write_file(dir: &Path, name: &str, text: &str) -> PathBuf {
 async fn a_zip_bomb_is_refused_and_nothing_is_written() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("bombe.zip");
     {
         let mut zip = zip::ZipWriter::new(BufWriter::new(std::fs::File::create(&path).unwrap()));
@@ -101,7 +101,7 @@ async fn an_apple_attribute_of_several_megabytes_is_refused_and_the_valid_record
 ) {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let mut body = valid_records(500);
     body += &record(
         "HeartRate",
@@ -120,7 +120,7 @@ async fn an_apple_attribute_of_several_megabytes_is_refused_and_the_valid_record
 async fn a_gpx_with_a_giant_text_node_is_refused_and_nothing_is_written() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let gpx = format!(
         "<?xml version=\"1.0\"?><gpx version=\"1.1\" creator=\"x\"><trk><name>{}</name><trkseg></trkseg></trk></gpx>",
         "x".repeat(6 * 1024 * 1024)
@@ -142,7 +142,7 @@ async fn a_gpx_with_a_giant_text_node_is_refused_and_nothing_is_written() {
 async fn ten_thousand_distinct_units_and_devices_stay_bounded_in_the_report_and_the_column() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let mut body = String::new();
     for i in 0..10_000 {
         body += &record("BodyMass", &format!("u{i}"), "62", "Apple Watch", &stamp(i));

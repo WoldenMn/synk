@@ -48,7 +48,7 @@ async fn count(pool: &SqlitePool, table: &str) -> i64 {
 #[tokio::test]
 async fn importing_the_same_backup_twice_does_not_duplicate() {
     let pool = setup_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("backup.json");
     std::fs::write(&path, backup_json()).unwrap();
     let path_str = path.to_string_lossy().into_owned();
@@ -77,7 +77,7 @@ async fn importing_the_same_backup_twice_does_not_duplicate() {
 #[tokio::test]
 async fn a_restored_row_is_updated_by_a_later_withings_sync() {
     let pool = setup_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("backup.json");
     std::fs::write(&path, backup_json()).unwrap();
     import_json_inner(&pool, &path.to_string_lossy())
@@ -111,7 +111,7 @@ async fn a_restored_row_is_updated_by_a_later_withings_sync() {
 #[tokio::test]
 async fn manual_rows_without_a_withings_id_are_still_imported() {
     let pool = setup_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("manual.json");
     std::fs::write(
         &path,

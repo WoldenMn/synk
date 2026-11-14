@@ -23,23 +23,23 @@ async fn documented_table_count_matches_the_schema() {
 
 #[test]
 fn the_reader_finds_a_count_in_prose() {
-    let dir = std::env::temp_dir().join(format!("synk-doc-tables-{}", std::process::id()));
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
+    let dir = tmp.path();
     std::fs::create_dir_all(dir.join("docs")).unwrap();
     std::fs::write(dir.join("README.md"), "voir 12 tables/vues ici").unwrap();
     std::fs::write(dir.join("CLAUDE.md"), "rien").unwrap();
-    let found = cited_table_counts(&dir);
-    std::fs::remove_dir_all(&dir).ok();
+    let found = cited_table_counts(dir);
     assert_eq!(found.len(), 1);
     assert_eq!(found[0].1, 12);
 }
 
 #[test]
 fn the_reader_does_without_claude_md() {
-    let dir = std::env::temp_dir().join(format!("synk-doc-tables-sans-{}", std::process::id()));
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
+    let dir = tmp.path();
     std::fs::create_dir_all(dir.join("docs")).unwrap();
     std::fs::write(dir.join("README.md"), "voir 12 tables/vues ici").unwrap();
-    let found = cited_table_counts(&dir);
-    std::fs::remove_dir_all(&dir).ok();
+    let found = cited_table_counts(dir);
     assert_eq!(found.len(), 1);
     assert_eq!(found[0].1, 12);
 }

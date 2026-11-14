@@ -95,7 +95,7 @@ async fn raw_credentials(pool: &SqlitePool) -> (String, String) {
 
 #[tokio::test]
 async fn secrets_sealed_with_a_lost_key_are_invalidated_and_health_data_kept() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let lost = CryptoVault::from_key(LOST_KEY);
     let current = CryptoVault::from_key(CURRENT_KEY);
@@ -145,7 +145,7 @@ async fn secrets_sealed_with_a_lost_key_are_invalidated_and_health_data_kept() {
 
 #[tokio::test]
 async fn after_invalidation_credentials_read_as_not_configured_and_sync_asks_to_reconnect() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let lost = CryptoVault::from_key(LOST_KEY);
     let current = Arc::new(CryptoVault::from_key(CURRENT_KEY));
@@ -189,7 +189,7 @@ async fn after_invalidation_credentials_read_as_not_configured_and_sync_asks_to_
 
 #[tokio::test]
 async fn readable_secrets_are_left_untouched() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let current = CryptoVault::from_key(CURRENT_KEY);
     let at = current.seal_str("AT").unwrap();
@@ -211,7 +211,7 @@ async fn readable_secrets_are_left_untouched() {
 
 #[tokio::test]
 async fn plaintext_secrets_are_left_to_the_migration() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let current = CryptoVault::from_key(CURRENT_KEY);
     insert_auth(&pool, "plain_at", "plain_rt").await;
@@ -234,7 +234,7 @@ async fn plaintext_secrets_are_left_to_the_migration() {
 
 #[tokio::test]
 async fn one_unreadable_token_invalidates_the_pair_and_keeps_readable_credentials() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let lost = CryptoVault::from_key(LOST_KEY);
     let current = CryptoVault::from_key(CURRENT_KEY);
@@ -262,7 +262,7 @@ async fn one_unreadable_token_invalidates_the_pair_and_keeps_readable_credential
 
 #[tokio::test]
 async fn invalidation_is_idempotent_and_noop_without_secrets() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let lost = CryptoVault::from_key(LOST_KEY);
     let current = CryptoVault::from_key(CURRENT_KEY);
@@ -318,7 +318,7 @@ async fn insert_source_credentials(pool: &SqlitePool, source: &str, cid: &str, s
 
 #[tokio::test]
 async fn every_source_is_covered_and_named_not_only_withings() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let lost = CryptoVault::from_key(LOST_KEY);
     let current = CryptoVault::from_key(CURRENT_KEY);

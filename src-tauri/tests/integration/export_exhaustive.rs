@@ -6,7 +6,7 @@ use synk_lib::commands::export::{
 
 #[tokio::test]
 async fn every_table_is_exported_or_excluded_with_a_reason() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = synk_lib::db::init_pool(dir.path().join("synk.db"))
         .await
         .expect("base temporaire initialisee");
@@ -89,7 +89,7 @@ fn user_rows(mut v: Value) -> Value {
 
 #[tokio::test]
 async fn export_then_import_into_an_empty_base_gives_the_same_data() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let source = fresh_pool(&dir, "source.db").await;
     populate(&source).await;
     let file = dir.path().join("export.json");
@@ -113,7 +113,7 @@ async fn export_then_import_into_an_empty_base_gives_the_same_data() {
 
 #[tokio::test]
 async fn every_exported_table_holds_a_row_in_the_round_trip() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let source = fresh_pool(&dir, "source.db").await;
     populate(&source).await;
     let json = export_value(&source).await.unwrap();
@@ -127,7 +127,7 @@ async fn every_exported_table_holds_a_row_in_the_round_trip() {
 
 #[tokio::test]
 async fn importing_the_same_file_twice_adds_nothing() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let source = fresh_pool(&dir, "source.db").await;
     populate(&source).await;
     let file = dir.path().join("export.json");
@@ -146,7 +146,7 @@ async fn importing_the_same_file_twice_adds_nothing() {
 
 #[tokio::test]
 async fn a_2_15_export_imports_without_loss_or_duplicate() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let target = fresh_pool(&dir, "cible.db").await;
     let fixture = concat!(
         env!("CARGO_MANIFEST_DIR"),
@@ -173,7 +173,7 @@ async fn a_2_15_export_imports_without_loss_or_duplicate() {
 
 #[tokio::test]
 async fn a_2_15_export_with_zeroed_external_ids_keeps_every_row() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let target = fresh_pool(&dir, "cible.db").await;
     let file = dir.path().join("deux_pesees.json");
     std::fs::write(
@@ -194,7 +194,7 @@ async fn a_2_15_export_with_zeroed_external_ids_keeps_every_row() {
 
 #[tokio::test]
 async fn the_profile_is_completed_never_overwritten() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let target = fresh_pool(&dir, "cible.db").await;
     sqlx::query("INSERT OR IGNORE INTO user_profile (id) VALUES (1)")
         .execute(&target)
@@ -221,7 +221,7 @@ async fn the_profile_is_completed_never_overwritten() {
 
 #[tokio::test]
 async fn an_oversized_file_is_refused_before_being_read() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let target = fresh_pool(&dir, "cible.db").await;
     let file = dir.path().join("enorme.json");
     std::fs::File::create(&file)
@@ -238,7 +238,7 @@ async fn an_oversized_file_is_refused_before_being_read() {
 
 #[tokio::test]
 async fn a_file_that_is_not_a_json_object_is_refused_on_its_first_bytes() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let target = fresh_pool(&dir, "cible.db").await;
     let file = dir.path().join("pas-un-objet.json");
     let mut body = b"MZ".to_vec();
@@ -258,7 +258,7 @@ async fn a_file_that_is_not_a_json_object_is_refused_on_its_first_bytes() {
 
 #[tokio::test]
 async fn a_json_object_after_leading_blanks_is_accepted() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let target = fresh_pool(&dir, "cible.db").await;
     let file = dir.path().join("blancs.json");
     std::fs::write(&file, "  \n\t{}").unwrap();
@@ -273,7 +273,7 @@ async fn a_json_object_after_leading_blanks_is_accepted() {
 
 #[tokio::test]
 async fn a_null_column_is_exported_as_null_not_zero() {
-    let dir = tempfile::tempdir().expect("dossier temporaire");
+    let dir = crate::support::temp_dirs::tempdir().expect("dossier temporaire");
     let pool = fresh_pool(&dir, "null.db").await;
     sqlx::query("INSERT INTO body_measures_legacy (measured_at, source, weight) VALUES ('2026-06-01T07:30:00Z', 'manual', 72.4)")
         .execute(&pool)
@@ -288,7 +288,7 @@ async fn a_null_column_is_exported_as_null_not_zero() {
 
 #[tokio::test]
 async fn an_export_carries_no_row_id_so_an_import_keeps_the_rows_already_there() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let source = fresh_pool(&dir, "source.db").await;
     populate(&source).await;
     let json = export_value(&source).await.unwrap();
@@ -323,7 +323,7 @@ async fn an_export_carries_no_row_id_so_an_import_keeps_the_rows_already_there()
 
 #[tokio::test]
 async fn a_profile_with_nothing_to_complete_is_counted_as_ignored() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let target = fresh_pool(&dir, "cible.db").await;
     sqlx::query("INSERT OR IGNORE INTO user_profile (id) VALUES (1)")
         .execute(&target)
@@ -350,7 +350,7 @@ async fn a_profile_with_nothing_to_complete_is_counted_as_ignored() {
 
 #[tokio::test]
 async fn a_row_whose_parent_is_unknown_is_counted_as_an_orphan() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let target = fresh_pool(&dir, "cible.db").await;
     let file = dir.path().join("orphelines.json");
     std::fs::write(

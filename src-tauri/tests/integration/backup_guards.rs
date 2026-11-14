@@ -22,7 +22,7 @@ async fn source_with_a_table(db_path: &Path) -> SqlitePool {
 
 #[tokio::test]
 async fn two_backups_to_the_same_target_never_share_the_temporary_file() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     let pool = source_with_a_table(&db_path).await;
     let backup_path = dir.path().join("backup.db");
@@ -52,7 +52,7 @@ async fn two_backups_to_the_same_target_never_share_the_temporary_file() {
 
 #[tokio::test]
 async fn verification_rejects_a_copy_without_any_table() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let empty = dir.path().join("vide.db");
     std::fs::write(&empty, b"").unwrap();
 
@@ -67,7 +67,7 @@ async fn verification_rejects_a_copy_without_any_table() {
 
 #[tokio::test]
 async fn a_manual_backup_without_a_database_is_refused() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
 
     let error = create_backup_in(dir.path(), None)
         .await
@@ -79,7 +79,7 @@ async fn a_manual_backup_without_a_database_is_refused() {
 
 #[tokio::test]
 async fn a_manual_backup_returns_the_path_of_a_verified_copy() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = source_with_a_table(&dir.path().join("synk.db")).await;
 
     let path = create_backup_in(dir.path(), Some(&pool))

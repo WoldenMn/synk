@@ -1,11 +1,10 @@
 use crate::support::import_gate;
-use std::env;
 use synk_lib::db::init_pool;
 
 #[tokio::test]
 async fn init_pool_enables_foreign_keys() {
-    let tmp = env::temp_dir().join(format!("synk_test_fk_{}.db", std::process::id()));
-    let _ = std::fs::remove_file(&tmp);
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
+    let tmp = dir.path().join("synk_test_fk.db");
 
     let pool = init_pool(tmp.clone()).await.unwrap();
     let (fk,): (i64,) = sqlx::query_as("PRAGMA foreign_keys")
@@ -15,13 +14,12 @@ async fn init_pool_enables_foreign_keys() {
     assert_eq!(fk, 1);
 
     pool.close().await;
-    let _ = std::fs::remove_file(&tmp);
 }
 
 #[tokio::test]
 async fn init_pool_sets_synchronous_normal() {
-    let tmp = env::temp_dir().join(format!("synk_test_sync_{}.db", std::process::id()));
-    let _ = std::fs::remove_file(&tmp);
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
+    let tmp = dir.path().join("synk_test_sync.db");
 
     let pool = init_pool(tmp.clone()).await.unwrap();
     let (sync,): (i64,) = sqlx::query_as("PRAGMA synchronous")
@@ -31,13 +29,12 @@ async fn init_pool_sets_synchronous_normal() {
     assert_eq!(sync, 1, "synchronous should be NORMAL (=1)");
 
     pool.close().await;
-    let _ = std::fs::remove_file(&tmp);
 }
 
 #[tokio::test]
 async fn zzz_probe_fk_after_migration009() {
-    let tmp = env::temp_dir().join(format!("synk_probe_fk_{}.db", std::process::id()));
-    let _ = std::fs::remove_file(&tmp);
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
+    let tmp = dir.path().join("synk_probe_fk.db");
 
     let pool = init_pool(tmp.clone()).await.unwrap();
 
@@ -65,14 +62,13 @@ async fn zzz_probe_fk_after_migration009() {
 
     drop(conns);
     pool.close().await;
-    let _ = std::fs::remove_file(&tmp);
 }
 
 #[tokio::test]
 async fn init_pool_sets_busy_timeout() {
     let _gate = import_gate::no_import_running().await;
-    let tmp = env::temp_dir().join(format!("synk_test_timeout_{}.db", std::process::id()));
-    let _ = std::fs::remove_file(&tmp);
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
+    let tmp = dir.path().join("synk_test_timeout.db");
 
     let pool = init_pool(tmp.clone()).await.unwrap();
     let (t,): (i64,) = sqlx::query_as("PRAGMA busy_timeout")
@@ -83,5 +79,4 @@ async fn init_pool_sets_busy_timeout() {
     assert!(t == 5000 || t == expected, "{t}");
 
     pool.close().await;
-    let _ = std::fs::remove_file(&tmp);
 }

@@ -82,6 +82,7 @@ mod stats_trend;
 mod sync_cursor;
 mod sync_log_last;
 mod sync_log_source;
+mod temp_dirs;
 mod temperature_metric;
 mod trace_import;
 mod vital_bounds;

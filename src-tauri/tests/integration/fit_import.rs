@@ -8,7 +8,9 @@ use synk_lib::sources::import::fit::import_fit;
 use synk_lib::sources::import::pipeline::ImportReport;
 
 use crate::common::memory_pool;
-use crate::support::activity_files::{sample_fit, write, NIGHT_START};
+use crate::support::activity_files::{
+    sample_fit, sample_fit_with_early_developer_field, write, NIGHT_START,
+};
 use crate::support::import_gate;
 
 async fn import(pool: &SqlitePool, path: &Path) -> Result<ImportReport, synk_lib::error::AppError> {
@@ -64,7 +66,7 @@ fn expected_night() -> String {
 async fn a_fit_file_lands_in_the_right_tables_with_its_device() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "sortie.fit", &sample_fit());
 
     let report = import(&pool, &path).await.expect("import");
@@ -136,7 +138,7 @@ async fn a_fit_file_lands_in_the_right_tables_with_its_device() {
 async fn importing_the_same_fit_file_twice_adds_nothing() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "sortie.fit", &sample_fit());
     import(&pool, &path).await.expect("premier import");
     let first = counts(&pool).await;
@@ -154,7 +156,7 @@ async fn importing_the_same_fit_file_twice_adds_nothing() {
 async fn a_corrupted_or_truncated_fit_file_is_a_named_error_and_writes_nothing() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let good = sample_fit();
 
     let mut flipped = good.clone();
@@ -186,7 +188,7 @@ async fn a_corrupted_or_truncated_fit_file_is_a_named_error_and_writes_nothing()
 async fn a_bad_checksum_says_so() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let mut bytes = sample_fit();
     let last = bytes.len() - 1;
     bytes[last] ^= 0x01;
@@ -201,7 +203,7 @@ async fn a_bad_checksum_says_so() {
 async fn a_cancelled_fit_import_writes_nothing() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "sortie.fit", &sample_fit());
 
     let report = import_fit(
@@ -221,7 +223,26 @@ async fn a_cancelled_fit_import_writes_nothing() {
 async fn a_file_with_another_extension_is_refused() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "sortie.txt", &sample_fit());
     assert!(import(&pool, &path).await.is_err());
+}
+
+#[tokio::test]
+async fn a_developer_field_before_its_description_does_not_reject_the_file() {
+    let _gate = import_gate::importing().await;
+    let pool = memory_pool().await;
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
+    let path = write(
+        dir.path(),
+        "champ-de-developpeur.fit",
+        &sample_fit_with_early_developer_field(),
+    );
+
+    let report = import(&pool, &path)
+        .await
+        .expect("un champ de developpeur sans description ne rend pas le fichier illisible");
+
+    assert_eq!(report.tally.workouts, 1);
+    assert_eq!(counts(&pool).await[5], 1);
 }

@@ -88,7 +88,7 @@ async fn workouts(pool: &sqlx::SqlitePool) -> i64 {
 #[tokio::test(flavor = "multi_thread")]
 async fn a_write_during_an_import_is_refused_at_once_and_clearly_and_the_import_still_commits() {
     let _gate = import_gate::importing().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let (pool, import, release) = held_import(dir.path(), false).await;
 
     let clock = Instant::now();
@@ -116,7 +116,7 @@ async fn a_write_during_an_import_is_refused_at_once_and_clearly_and_the_import_
 #[tokio::test(flavor = "multi_thread")]
 async fn cancelling_a_held_import_writes_nothing_and_frees_the_database() {
     let _gate = import_gate::importing().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let (pool, import, release) = held_import(dir.path(), true).await;
     release.send(()).unwrap();
     let report = import.await.unwrap().unwrap();

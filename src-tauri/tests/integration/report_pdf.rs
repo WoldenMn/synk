@@ -36,7 +36,7 @@ async fn seed_weighings(pool: &SqlitePool, count: u32) {
 async fn a_long_report_spans_several_pages_and_keeps_its_last_row() {
     let pool = crate::common::memory_pool().await;
     seed_weighings(&pool, 120).await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("rapport.pdf");
 
     export_pdf_to(
@@ -74,7 +74,7 @@ async fn a_long_report_spans_several_pages_and_keeps_its_last_row() {
 async fn report_values_are_written_the_french_way() {
     let pool = crate::common::memory_pool().await;
     seed_weighings(&pool, 1).await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("rapport.pdf");
 
     export_pdf_to(
@@ -96,7 +96,7 @@ async fn report_values_are_written_the_french_way() {
 
 #[tokio::test]
 async fn an_empty_period_writes_no_pdf() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = synk_lib::db::init_pool(dir.path().join("synk.db"))
         .await
         .unwrap();

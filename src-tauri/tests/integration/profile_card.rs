@@ -210,7 +210,7 @@ async fn generates_a_non_empty_profile_pdf() {
     insert_body(&pool, "2026-08-01", 74.5).await;
 
     let card = get_profile_card_inner(&pool).await.unwrap();
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("carte.pdf");
     render_profile_card(&card, &path).unwrap();
 
@@ -229,7 +229,7 @@ async fn profile_pdf_renders_on_empty_database() {
 
     let pool = crate::common::memory_pool().await;
     let card = get_profile_card_inner(&pool).await.unwrap();
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("vide.pdf");
     render_profile_card(&card, &path).unwrap();
     assert!(std::fs::read(&path).unwrap().len() > 500);
@@ -244,7 +244,7 @@ async fn profile_pdf_dense_content_produces_more_pages_than_an_empty_card() {
     // sinon l'assertion serait vraie meme sans contenu dense.
     let empty_pool = crate::common::memory_pool().await;
     let empty_card = get_profile_card_inner(&empty_pool).await.unwrap();
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let empty_path = dir.path().join("vide.pdf");
     render_profile_card(&empty_card, &empty_path).unwrap();
     let empty_pages = pdf_page_count(&std::fs::read(&empty_path).unwrap())
@@ -289,7 +289,7 @@ async fn every_page_of_a_multi_page_card_carries_its_own_footer() {
             .unwrap();
     }
     let card = get_profile_card_inner(&pool).await.unwrap();
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("dense.pdf");
     render_profile_card(&card, &path).unwrap();
 

@@ -2,7 +2,7 @@ use synk_lib::boot::integrity_check;
 
 #[tokio::test]
 async fn a_check_that_cannot_run_is_a_warning_not_a_success() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = synk_lib::db::init_pool(dir.path().join("synk.db"))
         .await
         .unwrap();
@@ -17,7 +17,7 @@ async fn a_check_that_cannot_run_is_a_warning_not_a_success() {
 
 #[tokio::test]
 async fn a_damaged_index_is_reported() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("abimee.db");
     let pool = sqlx::SqlitePool::connect(&format!("sqlite:{}?mode=rwc", path.display()))
         .await

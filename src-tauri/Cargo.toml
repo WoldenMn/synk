@@ -1,6 +1,6 @@
 [package]
 name = "synk"
-version = "1.0.0"
+version = "1.0.1"
 description = "Application de suivi sante et mensurations"
 authors = ["WoldenMn"]
 license = "LicenseRef-Proprietary"
@@ -42,7 +42,7 @@ thiserror = "2"
 urlencoding = "2"
 zip = { version = "~9.0.5", default-features = false, features = ["deflate-flate2"] }
 quick-xml = "0.42"
-fitparser = "~0.11.0"
+fitparser = "~0.12.0"
 
 [dev-dependencies]
 lopdf = { version = "0.44", default-features = false }

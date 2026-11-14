@@ -95,7 +95,7 @@ async fn counts(pool: &SqlitePool) -> Vec<i64> {
 async fn a_day_of_data_lands_in_the_right_tables_with_converted_units_and_origin_devices() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let report = import(&pool, &small_export(dir.path(), &day_body())).await;
 
     assert!(!report.cancelled);
@@ -177,7 +177,7 @@ async fn a_day_of_data_lands_in_the_right_tables_with_converted_units_and_origin
 async fn importing_the_same_export_twice_adds_nothing() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = small_export(dir.path(), &day_body());
     import(&pool, &path).await;
     let first = counts(&pool).await;
@@ -203,7 +203,7 @@ async fn a_direct_withings_weight_and_the_apple_copy_of_it_show_one_value_a_day(
     .execute(&pool)
     .await
     .unwrap();
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let body = record(
         "BodyMass",
         "lb",
@@ -234,7 +234,7 @@ async fn a_direct_withings_weight_and_the_apple_copy_of_it_show_one_value_a_day(
 async fn a_cancelled_import_writes_nothing_even_after_some_batches_were_written() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let mut body = String::new();
     for i in 0..20_000 {
         body += &record(
@@ -261,7 +261,7 @@ async fn a_cancelled_import_writes_nothing_even_after_some_batches_were_written(
 async fn an_unreadable_or_foreign_file_is_a_clear_error_and_writes_nothing() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let text = dir.path().join("notes.txt");
     std::fs::write(&text, "bonjour").unwrap();
     let cancel = Arc::new(AtomicBool::new(false));
@@ -313,7 +313,7 @@ fn parse_all(path: &Path) -> (u64, u64) {
 
 #[test]
 fn a_200000_record_export_is_read_in_a_few_megabytes_whatever_its_size() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let xml = write_xml(dir.path(), 200_000);
     let archive = zip_of(dir.path(), &xml);
     let xml_bytes = std::fs::metadata(&xml).unwrap().len();
@@ -337,7 +337,7 @@ fn a_200000_record_export_is_read_in_a_few_megabytes_whatever_its_size() {
 #[tokio::test]
 async fn a_200000_record_export_is_imported_with_every_expected_row() {
     let _gate = import_gate::importing().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let xml = write_xml(dir.path(), 200_000);
     let archive = zip_of(dir.path(), &xml);
     let pool = synk_lib::db::init_pool(dir.path().join("synk.db"))
@@ -360,7 +360,7 @@ async fn a_200000_record_export_is_imported_with_every_expected_row() {
 #[tokio::test]
 async fn a_three_megabyte_export_imports_completely_from_its_archive() {
     let _gate = import_gate::importing().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let xml = write_xml(dir.path(), 14_000);
     let size = std::fs::metadata(&xml).unwrap().len();
     assert!((3_000_000..4_000_000).contains(&size), "{size}");
@@ -380,7 +380,7 @@ async fn the_import_command_only_accepts_a_file_source_and_one_import_at_a_time(
     let _gate = import_gate::importing().await;
     use synk_lib::commands::import::{import_file_inner, ImportControl};
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = small_export(dir.path(), &day_body());
     let control = ImportControl::default();
     let path = path.to_str().unwrap();
@@ -491,14 +491,14 @@ fn write_a_sample_export_for_the_screen_check() {
 async fn a_day_total_that_changed_between_two_exports_is_updated_and_counted() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let morning = "2026-10-25 07:30:00 +0200";
     let first = small_export(
         dir.path(),
         &record("StepCount", "count", "4000", "iPhone", morning),
     );
     import(&pool, &first).await;
-    let dir2 = tempfile::tempdir().unwrap();
+    let dir2 = crate::support::temp_dirs::tempdir().unwrap();
     let body = record("StepCount", "count", "4000", "iPhone", morning)
         + &record(
             "StepCount",

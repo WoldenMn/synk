@@ -2,7 +2,7 @@
 
 Application desktop de suivi santé qui rassemble Withings, Oura, Polar, Whoop, Google Health et des fichiers exportés (Apple Santé, FIT, GPX, TCX, CSV). Tout reste sur la machine : base SQLite locale, jetons OAuth chiffrés, aucune télémétrie.
 
-Version courante : 1.0.0 (`package.json`, `src-tauri/Cargo.toml`, `src-tauri/tauri.conf.json`).
+Version courante : 1.0.1 (`package.json`, `src-tauri/Cargo.toml`, `src-tauri/tauri.conf.json`).
 
 ## Prérequis
 

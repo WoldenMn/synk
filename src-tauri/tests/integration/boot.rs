@@ -36,7 +36,7 @@ fn test_integrity_warning_serialization() {
 
 #[test]
 fn test_ensure_dir_exists_creates_missing_dir() {
-    let tmp_root = tempfile::TempDir::new().unwrap();
+    let tmp_root = crate::support::temp_dirs::tempdir().unwrap();
     let target = tmp_root.path().join("nested_dir_to_create");
     let result = ensure_dir_exists(&target);
     assert!(
@@ -48,14 +48,14 @@ fn test_ensure_dir_exists_creates_missing_dir() {
 
 #[test]
 fn test_ensure_dir_exists_noop_on_existing() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let result = ensure_dir_exists(tmp.path());
     assert!(result.is_ok());
 }
 
 #[tokio::test]
 async fn test_backup_before_migration_skipped_on_fresh_db() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = tmp.path().join("synk.db"); // does not exist
     let result = backup_before_migration(&db_path, tmp.path()).await.unwrap();
     assert_eq!(result, None, "no backup should be created on fresh DB");
@@ -65,7 +65,7 @@ async fn test_backup_before_migration_skipped_on_fresh_db() {
 
 #[tokio::test]
 async fn test_backup_before_migration_creates_file() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = tmp.path().join("synk.db");
     {
         let url = format!("sqlite:{}?mode=rwc", db_path.display());
@@ -97,7 +97,7 @@ async fn test_backup_before_migration_creates_file() {
 
 #[tokio::test]
 async fn test_backup_before_migration_failure_is_a_typed_boot_error() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = tmp.path().join("synk.db");
     let pool = sqlx::SqlitePool::connect(&format!("sqlite:{}?mode=rwc", db_path.display()))
         .await
@@ -152,7 +152,7 @@ fn test_boot_error_serialization_backup_failed() {
 
 #[tokio::test]
 async fn test_backup_before_migration_skipped_when_up_to_date() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = tmp.path().join("synk.db");
     {
         let url = format!("sqlite:{}?mode=rwc", db_path.display());
@@ -174,7 +174,7 @@ async fn test_backup_before_migration_skipped_when_up_to_date() {
 
 #[tokio::test]
 async fn test_backup_rolling_keeps_only_3() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let backups_dir = tmp.path().join("backups").join("auto");
     std::fs::create_dir_all(&backups_dir).unwrap();
     // 5 dummy backups with staggered mtimes : i=5 most recent, i=1 oldest
@@ -213,7 +213,7 @@ async fn test_backup_rolling_keeps_only_3() {
 async fn test_init_pool_with_retry_succeeds_after_busy() {
     use synk_lib::boot::init_pool_with_retry;
 
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = tmp.path().join("synk.db");
 
     // Create the DB and start an EXCLUSIVE transaction to block.
@@ -254,7 +254,7 @@ async fn test_init_pool_with_retry_succeeds_after_busy() {
 async fn test_init_pool_with_retry_fails_after_max() {
     use synk_lib::boot::init_pool_with_retry;
 
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = tmp.path().join("synk.db");
 
     let url = format!("sqlite:{}?mode=rwc", db_path.display());
@@ -381,7 +381,7 @@ fn dev_on_real_data_serializes_with_its_identifier() {
 
 #[tokio::test]
 async fn schema_version_of_a_missing_file_is_zero() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     assert_eq!(
         read_current_schema_version(&tmp.path().join("absente.db"))
             .await
@@ -392,7 +392,7 @@ async fn schema_version_of_a_missing_file_is_zero() {
 
 #[tokio::test]
 async fn schema_version_without_the_table_is_zero() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = tmp.path().join("synk.db");
     let pool = sqlx::SqlitePool::connect(&format!("sqlite:{}?mode=rwc", db_path.display()))
         .await
@@ -408,7 +408,7 @@ async fn schema_version_without_the_table_is_zero() {
 
 #[tokio::test]
 async fn unreadable_database_is_an_error_not_version_zero() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = tmp.path().join("synk.db");
     std::fs::write(&db_path, b"ceci n'est pas une base SQLite, juste du texte").unwrap();
 

@@ -26,14 +26,14 @@ async fn insert_typed_log(pool: &SqlitePool, data_type: &str, finished_at: &str,
 
 #[tokio::test]
 async fn empty_log_has_no_last_sync() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     assert_eq!(last_successful_sync(&pool).await.unwrap(), None);
 }
 
 #[tokio::test]
 async fn returns_the_latest_success_as_utc_iso() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     insert_log(&pool, "2026-09-30 08:00:00", "success").await;
     insert_log(&pool, "2026-10-01 09:30:00", "success").await;
@@ -46,7 +46,7 @@ async fn returns_the_latest_success_as_utc_iso() {
 
 #[tokio::test]
 async fn clearing_the_log_keeps_the_last_successful_sync() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     insert_log(&pool, "2026-09-30 08:00:00", "success").await;
     insert_log(&pool, "2026-10-01 09:30:00", "success").await;
@@ -67,7 +67,7 @@ async fn clearing_the_log_keeps_the_last_successful_sync() {
 
 #[tokio::test]
 async fn clearing_a_log_without_success_empties_it() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     insert_log(&pool, "2026-10-02 10:00:00", "error").await;
 
@@ -82,7 +82,7 @@ async fn clearing_a_log_without_success_empties_it() {
 
 #[tokio::test]
 async fn a_partial_sync_does_not_move_the_last_success() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     insert_typed_log(&pool, "measures", "2026-10-01 09:30:00", "success").await;
     insert_typed_log(&pool, "sleep", "2026-10-01 09:31:00", "success").await;
@@ -97,7 +97,7 @@ async fn a_partial_sync_does_not_move_the_last_success() {
 
 #[tokio::test]
 async fn a_module_that_never_succeeded_does_not_hold_the_date_back() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     insert_typed_log(&pool, "measures", "2026-10-01 09:30:00", "success").await;
     insert_typed_log(&pool, "heart", "2026-10-01 09:30:05", "error").await;
@@ -110,7 +110,7 @@ async fn a_module_that_never_succeeded_does_not_hold_the_date_back() {
 
 #[tokio::test]
 async fn clearing_the_log_keeps_the_last_success_of_every_module() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     insert_typed_log(&pool, "measures", "2026-09-30 08:00:00", "success").await;
     insert_typed_log(&pool, "measures", "2026-10-01 09:30:00", "success").await;

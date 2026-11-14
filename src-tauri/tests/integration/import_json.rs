@@ -13,7 +13,7 @@ fn write_temp_json(content: &str) -> tempfile::NamedTempFile {
     use std::io::Write;
     let mut file = tempfile::Builder::new()
         .suffix(".json")
-        .tempfile()
+        .tempfile_in(crate::support::temp_dirs::root())
         .expect("creation du fichier temporaire .json");
     file.write_all(content.as_bytes())
         .expect("ecriture du JSON temporaire");

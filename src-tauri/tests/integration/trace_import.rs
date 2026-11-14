@@ -42,7 +42,7 @@ async fn the_trace_source_exists_after_the_migration() {
 async fn a_gpx_track_becomes_a_workout_with_distance_climb_and_heart_rate() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "sortie.gpx", sample_gpx().as_bytes());
 
     let report = import(&pool, &path).await.expect("import");
@@ -66,7 +66,7 @@ async fn a_gpx_track_becomes_a_workout_with_distance_climb_and_heart_rate() {
 async fn a_tcx_activity_takes_its_totals_from_the_laps() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "sortie.tcx", sample_tcx().as_bytes());
 
     let report = import(&pool, &path).await.expect("import");
@@ -88,7 +88,7 @@ async fn a_tcx_activity_takes_its_totals_from_the_laps() {
 async fn reimporting_a_gpx_or_a_tcx_adds_nothing() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let gpx = write(dir.path(), "a.gpx", sample_gpx().as_bytes());
     let tcx = write(dir.path(), "b.tcx", sample_tcx().as_bytes());
     import(&pool, &gpx).await.expect("gpx");
@@ -106,7 +106,7 @@ async fn reimporting_a_gpx_or_a_tcx_adds_nothing() {
 async fn a_truncated_or_foreign_file_is_a_named_error_and_writes_nothing() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let gpx = sample_gpx();
     let cut = write(
         dir.path(),
@@ -132,7 +132,7 @@ async fn a_truncated_or_foreign_file_is_a_named_error_and_writes_nothing() {
 async fn a_cancelled_trace_import_writes_nothing() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "a.gpx", sample_gpx().as_bytes());
     let cancel = Arc::new(AtomicBool::new(true));
 

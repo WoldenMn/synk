@@ -49,7 +49,7 @@ fn suggested(path: &Path) -> CsvConfig {
 async fn the_assistant_suggestion_imports_a_scale_and_pressure_file() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "balance.csv", SCALE.as_bytes());
 
     let report = run(&pool, &path, suggested(&path)).await.expect("import");
@@ -77,7 +77,7 @@ async fn the_assistant_suggestion_imports_a_scale_and_pressure_file() {
 async fn a_libreview_export_is_recognised_and_its_values_converted() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "libreview.csv", LIBRE.as_bytes());
     let inspection = inspect_file(path.to_str().unwrap()).expect("inspection");
     assert_eq!(inspection.preset, Some("LibreView"));
@@ -102,7 +102,7 @@ async fn a_libreview_export_is_recognised_and_its_values_converted() {
 async fn importing_the_same_csv_twice_adds_nothing_and_an_overlapping_one_adds_only_the_new_rows() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "balance.csv", SCALE.as_bytes());
     let config = suggested(&path);
     run(&pool, &path, config.clone()).await.expect("premier");
@@ -137,7 +137,7 @@ async fn importing_the_same_csv_twice_adds_nothing_and_an_overlapping_one_adds_o
 async fn a_binary_file_or_a_wrong_mapping_is_a_named_error_and_writes_nothing() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "balance.csv", SCALE.as_bytes());
     let mut config = suggested(&path);
 
@@ -168,7 +168,7 @@ async fn a_binary_file_or_a_wrong_mapping_is_a_named_error_and_writes_nothing() 
 async fn a_row_cut_in_the_middle_is_counted_not_guessed() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let kept: Vec<&str> = SCALE.lines().take(3).collect();
     let cut_text = format!("{}\n28/10/2026 07:", kept.join("\n"));
     let path = write(dir.path(), "coupe.csv", cut_text.as_bytes());
@@ -185,7 +185,7 @@ async fn a_row_cut_in_the_middle_is_counted_not_guessed() {
 async fn a_cancelled_csv_import_writes_nothing() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "balance.csv", SCALE.as_bytes());
 
     let report = import_csv(
@@ -206,7 +206,7 @@ async fn a_cancelled_csv_import_writes_nothing() {
 async fn a_saved_mapping_comes_back_for_the_same_columns_and_can_be_replaced_or_removed() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "balance.csv", SCALE.as_bytes());
     let inspection = inspect_file(path.to_str().unwrap()).expect("inspection");
 
@@ -253,7 +253,7 @@ async fn a_saved_mapping_comes_back_for_the_same_columns_and_can_be_replaced_or_
 async fn a_mapping_that_could_never_import_is_refused_when_saved() {
     let _gate = import_gate::importing().await;
     let pool = memory_pool().await;
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = write(dir.path(), "balance.csv", SCALE.as_bytes());
     let inspection = inspect_file(path.to_str().unwrap()).expect("inspection");
 

@@ -1,6 +1,6 @@
 {
   "name": "synk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "engines": {
@@ -73,7 +73,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",
-    "jsdom": "^29.1.1",
+    "jsdom": "^31.0.0",
     "prettier": "^3.8.3",
     "tailwindcss": "^4.3.3",
     "tw-animate-css": "^1.4.0",

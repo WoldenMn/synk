@@ -78,7 +78,7 @@ fn broken_leftovers(root: &Path) -> Vec<String> {
 
 #[tokio::test]
 async fn restore_fails_when_no_auto_dir() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let result = restore_latest_backup_inner(tmp.path()).await;
     assert!(result
         .unwrap_err()
@@ -88,7 +88,7 @@ async fn restore_fails_when_no_auto_dir() {
 
 #[tokio::test]
 async fn restore_fails_when_auto_dir_empty() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     make_auto_dir(tmp.path());
     let result = restore_latest_backup_inner(tmp.path()).await;
     assert!(result
@@ -99,7 +99,7 @@ async fn restore_fails_when_auto_dir_empty() {
 
 #[tokio::test]
 async fn restore_copies_backup_to_db_path() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let auto_dir = make_auto_dir(tmp.path());
     write_backup(&auto_dir, "synk_2026-01-01_pre-v14.db", "SAUVEGARDE").await;
 
@@ -116,7 +116,7 @@ async fn restore_copies_backup_to_db_path() {
 
 #[tokio::test]
 async fn restore_preserves_existing_db_as_broken() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let auto_dir = make_auto_dir(tmp.path());
     write_backup(&auto_dir, "synk_2026-01-01_pre-v14.db", "SAUVEGARDE").await;
     let db_path = tmp.path().join("synk.db");
@@ -131,7 +131,7 @@ async fn restore_preserves_existing_db_as_broken() {
 
 #[tokio::test]
 async fn restore_picks_most_recent_backup_when_multiple() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let auto_dir = make_auto_dir(tmp.path());
     let old_path = write_backup(&auto_dir, "synk_2026-01-01_pre-v13.db", "ANCIENNE").await;
     let new_path = write_backup(&auto_dir, "synk_2026-06-27_pre-v14.db", "RECENTE").await;
@@ -146,7 +146,7 @@ async fn restore_picks_most_recent_backup_when_multiple() {
 
 #[tokio::test]
 async fn restore_skips_a_corrupt_latest_backup_and_uses_the_previous_valid_one() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let auto_dir = make_auto_dir(tmp.path());
     let valid = write_backup(&auto_dir, "synk_2026-01-01_pre-v13.db", "ANCIENNE").await;
     let corrupt = write_garbage(&auto_dir, "synk_2026-06-27_pre-v14.db");
@@ -163,7 +163,7 @@ async fn restore_skips_a_corrupt_latest_backup_and_uses_the_previous_valid_one()
 
 #[tokio::test]
 async fn restore_refuses_when_no_backup_is_usable_and_leaves_the_current_db_alone() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let auto_dir = make_auto_dir(tmp.path());
     write_garbage(&auto_dir, "synk_2026-06-27_pre-v14.db");
     let db_path = tmp.path().join("synk.db");
@@ -189,7 +189,7 @@ async fn restore_refuses_when_no_backup_is_usable_and_leaves_the_current_db_alon
 
 #[tokio::test]
 async fn restore_moves_the_journal_of_the_current_db_aside_with_it() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let auto_dir = make_auto_dir(tmp.path());
     write_backup(&auto_dir, "synk_2026-01-01_pre-v14.db", "SAUVEGARDE").await;
     let db_path = tmp.path().join("synk.db");
@@ -223,7 +223,7 @@ async fn restore_moves_the_journal_of_the_current_db_aside_with_it() {
 async fn restore_puts_everything_back_when_the_journal_cannot_be_moved() {
     use std::os::windows::fs::OpenOptionsExt;
 
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let auto_dir = make_auto_dir(tmp.path());
     write_backup(&auto_dir, "synk_2026-01-01_pre-v14.db", "SAUVEGARDE").await;
     let db_path = tmp.path().join("synk.db");
@@ -258,7 +258,7 @@ async fn restore_puts_everything_back_when_the_journal_cannot_be_moved() {
 
 #[tokio::test]
 async fn restore_ignores_non_db_files_in_auto_dir() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let auto_dir = make_auto_dir(tmp.path());
     std::fs::write(auto_dir.join("notes.txt"), b"irrelevant").unwrap();
     std::fs::write(auto_dir.join("synk.db-wal"), b"wal data").unwrap();
@@ -269,7 +269,7 @@ async fn restore_ignores_non_db_files_in_auto_dir() {
 
 #[tokio::test]
 async fn restores_the_newest_backup_whatever_its_kind() {
-    let tmp = tempfile::TempDir::new().unwrap();
+    let tmp = crate::support::temp_dirs::tempdir().unwrap();
     let auto_dir = make_auto_dir(tmp.path());
     let daily_dir = tmp.path().join("backups").join("daily");
     std::fs::create_dir_all(&daily_dir).unwrap();

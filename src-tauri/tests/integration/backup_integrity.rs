@@ -64,7 +64,7 @@ async fn open_as_restore_would(backup_path: &std::path::Path) -> SqlitePool {
 
 #[tokio::test]
 async fn a_backup_contains_writes_still_sitting_in_the_wal() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     let pool = pool_with_a_write_left_in_the_wal(&db_path).await;
 
@@ -87,7 +87,7 @@ async fn a_backup_contains_writes_still_sitting_in_the_wal() {
 
 #[tokio::test]
 async fn a_backup_without_a_pool_opens_its_own_connection() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     let pool = pool_with_a_write_left_in_the_wal(&db_path).await;
 
@@ -124,9 +124,30 @@ fn files_in(dir: &Path) -> Vec<String> {
     names
 }
 
+const SETTLE_GRACE: std::time::Duration = std::time::Duration::from_secs(2);
+
+fn settled_files_in(dir: &Path, settled: impl Fn(&[String]) -> bool) -> Vec<String> {
+    let end = std::time::Instant::now() + SETTLE_GRACE;
+    loop {
+        let names = files_in(dir);
+        if settled(&names) || std::time::Instant::now() >= end {
+            return names;
+        }
+        std::thread::sleep(std::time::Duration::from_millis(5));
+    }
+}
+
+fn beside_backup(names: &[String]) -> Vec<String> {
+    names
+        .iter()
+        .filter(|name| name.to_lowercase().starts_with("backup"))
+        .cloned()
+        .collect()
+}
+
 #[tokio::test]
 async fn a_backup_keeps_writes_that_an_open_reader_holds_out_of_the_main_file() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     let writer = pool_with_a_write_left_in_the_wal(&db_path).await;
 
@@ -168,7 +189,7 @@ async fn a_backup_keeps_writes_that_an_open_reader_holds_out_of_the_main_file() 
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn a_backup_taken_during_concurrent_writes_is_a_consistent_snapshot() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     let pool = SqlitePoolOptions::new()
         .max_connections(4)
@@ -276,7 +297,7 @@ async fn second_connection(db_path: &Path) -> SqlitePool {
 
 #[tokio::test]
 async fn a_backup_taken_while_a_write_is_pending_restores_every_committed_row() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     let app_pool = pool_with_a_write_left_in_the_wal(&db_path).await;
     let reader = second_connection(&db_path).await;
@@ -382,7 +403,7 @@ async fn damaged_database(db_path: &Path) {
 
 #[tokio::test]
 async fn a_damaged_database_is_refused_without_leaving_a_backup_file() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     damaged_database(&db_path).await;
     let backups_dir = dir.path().join("backups");
@@ -397,16 +418,13 @@ async fn a_damaged_database_is_refused_without_leaving_a_backup_file() {
         message.detail().contains("Sauvegarde"),
         "le message doit dire ce qui a echoue : {message}"
     );
-    assert!(
-        files_in(&backups_dir).is_empty(),
-        "aucun fichier ne doit rester : {:?}",
-        files_in(&backups_dir)
-    );
+    let left = settled_files_in(&backups_dir, |names| names.is_empty());
+    assert!(left.is_empty(), "aucun fichier ne doit rester : {left:?}");
 }
 
 #[tokio::test]
 async fn an_existing_file_is_never_overwritten() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     let pool = pool_with_a_write_left_in_the_wal(&db_path).await;
 
@@ -428,7 +446,7 @@ async fn an_existing_file_is_never_overwritten() {
 
 #[tokio::test]
 async fn a_backup_restores_every_row_it_holds() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     let pool = pool_with_a_write_left_in_the_wal(&db_path).await;
     let auto_dir = dir.path().join("backups").join("auto");
@@ -466,7 +484,7 @@ async fn a_backup_restores_every_row_it_holds() {
 
 #[tokio::test]
 async fn verification_accepts_a_sound_copy() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let db_path = dir.path().join("synk.db");
     let pool = pool_with_a_write_left_in_the_wal(&db_path).await;
     let backup_path = dir.path().join("backup.db");
@@ -476,10 +494,9 @@ async fn verification_accepts_a_sound_copy() {
     pool.close().await;
 
     verify_backup(&backup_path).await.unwrap();
-    let around_backup: Vec<String> = files_in(dir.path())
-        .into_iter()
-        .filter(|name| name.starts_with("backup"))
-        .collect();
+    let around_backup = beside_backup(&settled_files_in(dir.path(), |names| {
+        beside_backup(names) == ["backup.db"]
+    }));
     assert_eq!(
         around_backup,
         vec!["backup.db".to_string()],
@@ -489,7 +506,7 @@ async fn verification_accepts_a_sound_copy() {
 
 #[tokio::test]
 async fn verification_rejects_a_damaged_copy() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let damaged = dir.path().join("abimee.db");
     damaged_database(&damaged).await;
 

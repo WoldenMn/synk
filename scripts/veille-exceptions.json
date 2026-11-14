@@ -78,9 +78,15 @@
     "echeance": "2027-01-23"
   },
   {
-    "id": "majeure:jsdom",
-    "motif": "jsdom sert seulement d'environnement DOM aux tests vitest, absent de l'exe. Le frein de R22 (jsdom 30 exige Node 24.15) est leve, le poste est en Node 24.22 : la montee se fait dans un lot a part, testee seule, pas dans la release 3.0.1 qui ne corrige que des textes",
-    "date": "2026-10-29",
-    "echeance": "2026-11-29"
+    "id": "RUSTSEC-2026-0459",
+    "motif": "libsqlite3-sys 0.30.1 (C SQLite, CVE-2026-119375) : correctif en 0.39, bloque par sqlx-sqlite =0.9.0 de sqlx 0.9 ; accepte par le user le 2026-11-14 pour la release 3.2.6, jusqu'a la montee de sqlx",
+    "date": "2026-11-14",
+    "echeance": "2026-12-14"
+  },
+  {
+    "id": "yanked:async-executor",
+    "motif": "async-executor 1.14.0 retire du registre, tire par zbus (tauri-plugin-opener, tauri-plugin-single-instance), Linux seulement : cargo tree --target x86_64-pc-windows-msvc -i vide le 2026-11-14 ; accepte par le user le 2026-11-14",
+    "date": "2026-11-14",
+    "echeance": "2026-12-14"
   }
 ]

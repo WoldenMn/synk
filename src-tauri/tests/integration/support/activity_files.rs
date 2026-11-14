@@ -96,6 +96,33 @@ impl FitBuilder {
         self
     }
 
+    pub fn message_with_developer_field(
+        &mut self,
+        global: u16,
+        fields: &[(u8, V)],
+        developer: (u8, u8, &[u8]),
+    ) -> &mut Self {
+        let (number, index, bytes) = developer;
+        self.data.push(0x60);
+        self.data.push(0);
+        self.data.push(0);
+        self.data.extend_from_slice(&global.to_le_bytes());
+        self.data.push(fields.len() as u8);
+        for (field, value) in fields {
+            self.data
+                .extend_from_slice(&[*field, value.size(), value.base()]);
+        }
+        self.data.push(1);
+        self.data
+            .extend_from_slice(&[number, bytes.len() as u8, index]);
+        self.data.push(0x00);
+        for (_, value) in fields {
+            self.data.extend(value.bytes());
+        }
+        self.data.extend_from_slice(bytes);
+        self
+    }
+
     pub fn finish(&self) -> Vec<u8> {
         let mut header = vec![14u8, 0x20];
         header.extend_from_slice(&2132u16.to_le_bytes());
@@ -182,6 +209,39 @@ pub fn sample_fit() -> Vec<u8> {
         );
     }
     f.message(ACTIVITY, &[(253, V::U32(fit_time(NIGHT_START + 25_800)))]);
+    f.finish()
+}
+
+pub fn sample_fit_with_early_developer_field() -> Vec<u8> {
+    let mut f = FitBuilder::default();
+    f.message(
+        FILE_ID,
+        &[
+            (0, V::Enum(4)),
+            (1, V::U16(1)),
+            (4, V::U32(fit_time(RUN_START))),
+            (8, V::Text("Forerunner Test", 16)),
+        ],
+    );
+    f.message_with_developer_field(
+        SESSION,
+        &[
+            (253, V::U32(fit_time(RUN_START + 1830))),
+            (2, V::U32(fit_time(RUN_START))),
+            (5, V::Enum(1)),
+            (6, V::Enum(0)),
+            (7, V::U32(1_830_000)),
+            (8, V::U32(1_800_000)),
+            (9, V::U32(512_345)),
+            (11, V::U16(320)),
+            (16, V::U8(148)),
+            (17, V::U8(176)),
+            (64, V::U8(102)),
+            (22, V::U16(86)),
+        ],
+        (0, 0, &[0x2A, 0x00]),
+    );
+    f.message(ACTIVITY, &[(253, V::U32(fit_time(RUN_START + 1900)))]);
     f.finish()
 }
 

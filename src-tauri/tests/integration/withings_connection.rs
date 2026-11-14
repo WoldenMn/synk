@@ -21,7 +21,7 @@ async fn insert_auth(pool: &SqlitePool, refresh: &str, expires_in_secs: i64) {
 
 #[tokio::test]
 async fn expired_access_token_with_refresh_token_counts_as_connected() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     insert_auth(&pool, "enc:v1:rafraichissement", -3600).await;
     assert!(is_connected_inner(&pool).await.unwrap());
@@ -29,14 +29,14 @@ async fn expired_access_token_with_refresh_token_counts_as_connected() {
 
 #[tokio::test]
 async fn no_auth_row_is_not_connected() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     assert!(!is_connected_inner(&pool).await.unwrap());
 }
 
 #[tokio::test]
 async fn empty_refresh_token_is_not_connected() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     insert_auth(&pool, "", 3600).await;
     assert!(!is_connected_inner(&pool).await.unwrap());
@@ -44,7 +44,7 @@ async fn empty_refresh_token_is_not_connected() {
 
 #[tokio::test]
 async fn disconnecting_forgets_the_tokens_and_restarts_every_cursor() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     insert_auth(&pool, "enc:v1:rafraichissement", 3600).await;
     sqlx::query("UPDATE source_state SET last_sync_at = 1700000000")

@@ -1,6 +1,6 @@
 # Pièges connus
 
-Chaque entrée est un piège déjà payé : le symptôme, la cause, et le garde qui le voit désormais. Les identifiants (P01 à P54) sont stables ; `CLAUDE.md` en reprend l'essentiel et renvoie ici pour le détail.
+Chaque entrée est un piège déjà payé : le symptôme, la cause, et le garde qui le voit désormais. Les identifiants (P01 à P56) sont stables ; `CLAUDE.md` en reprend l'essentiel et renvoie ici pour le détail.
 
 <a id="p01"></a>
 ## P01. Une classe de `@layer utilities` n'est plus un utilitaire en Tailwind 4
@@ -273,3 +273,13 @@ Printpdf encode le texte des polices Helvetica integrees en WinAnsi (`printpdf-0
 ## P54. printpdf reduit en silence une image de plus de 2 Mo
 
 `PdfSaveOptions::default()` porte `ImageOptimizationOptions { max_image_size: Some("2MB"), .. }` : a l'enregistrement, toute image estimee au-dela (largeur x hauteur x octets par pixel) est reechantillonnee au plus proche voisin, sans avertissement (`printpdf-0.12.8/src/image.rs`, `optimize` puis `resize_to_fit_size`). Mesure : une image RVB de 1000 x 1000 ressortait en 836 x 836 dans le PDF. Les figures de la fiche (niveaux de gris + alpha, 1,4 Mo) passent sous le plafond, mais il mord des qu'on livre une figure plus grande ou en couleur. `canvas.rs` le retire (`max_image_size: None`), tenu par `keeps_an_image_above_two_megabytes_at_its_original_size` (vu rouge avec le plafond remis). Une image RVB toute grise, elle, passe en niveaux de gris (`auto_optimize`) sous le plafond et ne prouve rien : le garde utilise des canaux differents.
+
+<a id="p55"></a>
+## P55. Sous Windows, le dossier temporaire d'un test ne se retire pas tant que sa base est ouverte
+
+`tempfile::TempDir` retire son dossier en fin de test et avale l'échec. Or le pool sqlx ferme ses connexions après coup, sur leurs propres fils (P36) : sous Windows, un fichier encore ouvert ne s'efface pas, et le dossier reste. Chaque passage du binaire `tests/integration/` laissait ainsi de 50 à 150 dossiers `.tmp*` dans `%TEMP%`, chacun avec sa base (868 dossiers et 390 Mo pour la seule journée du 2026-11-14). Mesure : le fichier `export_exhaustive` lancé seul en laissait 13 en un passage, `export_csv` aucun : tout dépend de l'instant où les connexions se ferment. Tout test d'intégration prend ses dossiers et fichiers temporaires par `support::temp_dirs` (`tempdir()`, `root()`) : ils vivent sous `CARGO_TARGET_TMPDIR`, hors de `%TEMP%`, et chaque lancement du binaire retire ce que les passages de plus d'une heure y ont laissé. Garde : `temp_dirs::no_integration_test_writes_into_the_system_temp_dir` refuse `tempfile::tempdir()`, `TempDir::new()`, `NamedTempFile::new()`, un `Builder` sans `_in` et `temp_dir()` partout ailleurs (vu rouge sur `boot.rs` et `restore_backup.rs`) ; `the_sweep_removes_only_what_is_older_than_the_cutoff` tient le balayage.
+
+<a id="p56"></a>
+## P56. Un filtre du poste montre un instant le journal que SQLite vient d'effacer
+
+Après une sauvegarde refusée (`copy_database_safely` sur une base abîmée), le dossier des sauvegardes montre parfois, pendant 0 à 1 ms, un fichier `<NOM>.DB.PARTIAL-JOURNAL.tmp` en majuscules. Ce n'est pas un nom de SQLite : c'est un filtre du système de fichiers (un antivirus) qui matérialise le journal que SQLite vient de supprimer. Mesure du 2026-11-14 : 22 refus sur 300, puis 13 sur 150, jamais un reste au-delà de 1 ms ; le `.partial` lui-même part toujours. `a_damaged_database_is_refused_without_leaving_a_backup_file` lisait le dossier deux fois, pour l'assertion puis pour son message, et tombait en affichant une liste vide (passage de santé d'Intendance de la nuit du 2026-11-14). Un test qui affirme qu'aucun fichier ne reste lit le dossier par `settled_files_in` : la liste est lue une fois, après au plus deux secondes de grâce, et un reste qui dure fait toujours échouer le test.

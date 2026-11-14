@@ -31,7 +31,7 @@ fn daily_count(dir: &tempfile::TempDir) -> usize {
 
 #[tokio::test]
 async fn writes_a_readable_first_backup() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let outcome = periodic_backup_inner(&pool, dir.path(), SystemTime::now())
         .await
@@ -51,7 +51,7 @@ async fn writes_a_readable_first_backup() {
 
 #[tokio::test]
 async fn skips_when_the_latest_backup_is_fresh() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let now = SystemTime::now();
     periodic_backup_inner(&pool, dir.path(), now).await.unwrap();
@@ -64,7 +64,7 @@ async fn skips_when_the_latest_backup_is_fresh() {
 
 #[tokio::test]
 async fn keeps_only_the_fourteen_latest() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let start = SystemTime::now();
     for day in 0..(PERIODIC_KEEP as u64 + 2) {
@@ -80,7 +80,7 @@ async fn keeps_only_the_fourteen_latest() {
 
 #[tokio::test]
 async fn failure_is_reported_not_swallowed() {
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     std::fs::create_dir_all(dir.path().join("backups")).unwrap();
     std::fs::write(dir.path().join("backups").join("daily"), b"pas un dossier").unwrap();
@@ -136,7 +136,7 @@ async fn a_long_session_writes_a_backup_every_day_without_a_restart() {
     use std::sync::atomic::{AtomicU32, Ordering};
     use std::sync::Arc;
 
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let pool = bootstrapped_pool(&dir).await;
     let start = SystemTime::now();
     let hours = Arc::new(AtomicU32::new(0));

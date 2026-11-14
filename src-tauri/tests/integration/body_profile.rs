@@ -280,7 +280,7 @@ async fn the_sheet_pdf_spills_onto_a_third_page() {
 
     let pool = crate::common::memory_pool().await;
     let rows = get_body_sheet_inner(&pool).await.unwrap();
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("fiche.pdf");
     render_sheet(&rows, &path).unwrap();
 
@@ -300,7 +300,7 @@ async fn every_page_of_the_sheet_pdf_carries_its_own_footer() {
 
     let pool = crate::common::memory_pool().await;
     let rows = get_body_sheet_inner(&pool).await.unwrap();
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("fiche.pdf");
     render_sheet(&rows, &path).unwrap();
     let bytes = std::fs::read(&path).unwrap();
@@ -345,7 +345,7 @@ async fn generates_a_non_empty_pdf() {
     .unwrap();
 
     let rows = get_body_sheet_inner(&pool).await.unwrap();
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("fiche.pdf");
     render_sheet(&rows, &path).unwrap();
 
@@ -381,7 +381,7 @@ async fn the_sheet_pdf_carries_both_figures_unaltered() {
 
     let pool = crate::common::memory_pool().await;
     let rows = get_body_sheet_inner(&pool).await.unwrap();
-    let dir = tempfile::tempdir().unwrap();
+    let dir = crate::support::temp_dirs::tempdir().unwrap();
     let path = dir.path().join("fiche.pdf");
     render_sheet(&rows, &path).unwrap();
     let bytes = std::fs::read(&path).unwrap();
